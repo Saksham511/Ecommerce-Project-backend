@@ -1,3 +1,4 @@
+import { json } from "express";
 import User from "../model/user.js";
 
 export const createUser= async(req,res) => {
@@ -10,8 +11,13 @@ export const createUser= async(req,res) => {
             password,
             cPassword,
         });
+        res.send({
+            message:"User Created!",
+            createdUser: user,
+        });
     }
     catch(err){
         console.log(err);
+        res.status(400).send({message: "Error creating user", error: JSON.stringify(err)});
     }
 };
