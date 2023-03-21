@@ -6,6 +6,6 @@ import validateData from "../middleware/validation.js";
 const userRouter = Router();
 
 userRouter.route("/signup").post(validateData(userSchema), createUser);
-userRouter.route("/login").get(loginAuthentication);
+userRouter.route("/login").post(loginAuthentication);
 
 export default userRouter;
