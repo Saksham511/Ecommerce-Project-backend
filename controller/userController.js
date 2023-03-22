@@ -3,6 +3,11 @@ import User from "../model/user.js";
 
 export const createUser = async (req, res) => {
   const { firstName, lastName, email, password, cPassword } = req.body;
+  const oldUser = await User.findOne({ email });
+  if (oldUser) {
+    return res.send({ status: 409, 
+                      message: "This Email Already Exist. Please Login" });
+  }
   try {
     const user = await User.create({
       firstName,
@@ -12,14 +17,17 @@ export const createUser = async (req, res) => {
       cPassword,
     });
     res.send({
+      status: 100,
       message: "User Created!",
       createdUser: user,
     });
   } catch (err) {
     console.log(err);
     res
-      .status(400)
-      .send({ message: "Error creating user", error: JSON.stringify(err) });
+      .send({ 
+        status: 400,
+        message: "Error creating user",
+        error: JSON.stringify(err) });
   }
 };
 
@@ -29,16 +37,25 @@ export const loginAuthentication = async (req, res) => {
     const user = await User.findOne({ email });
     if (user) {
       if (password == user.password) {
-        res.send({ message: "User Authenticated", authenticatedUser: user });
+        res.send({ 
+          status: 101,
+          message: "User Authenticated", 
+          authenticatedUser: user });
       } else {
-        res.status(200).send({ message: "Wrong Password!" });
+        res.send({ 
+          status: 200,
+          message: "Wrong Password!" });
       }
     } else {
       console.log("User not found !");
-      res.status(404).send({ message: "User not found !" });
+      res.send({ 
+        status: 404,
+        message: "User not found !" });
     }
   } catch (err) {
     console.log(err);
-    res.status(400).send({ message: "Error ! ", error: JSON.stringify(err) });
+    res.send({ 
+      status: 400,
+      message: "Error ! ", error: JSON.stringify(err) });
   }
 };

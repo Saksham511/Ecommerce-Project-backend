@@ -5,7 +5,8 @@ const validateData = (schema) => async (req, res, next) => {
     next();
   } catch (error) {
     res.send({
-      message: `Validation failed! ${error.errors.join(",")}`,
+      status: 200,
+      message: ` ${error.errors.join(",")}`,
     });
   }
 };
