@@ -5,8 +5,9 @@ export const createUser = async (req, res) => {
   const { firstName, lastName, email, password, cPassword } = req.body;
   const oldUser = await User.findOne({ email });
   if (oldUser) {
-    return res.send({ status: 409, 
-                      message: "This Email Already Exist. Please Login" });
+    return res.send({
+      status: 409, 
+      message: "This Email Already Exist. Please Login" });
   }
   try {
     const user = await User.create({
@@ -33,20 +34,22 @@ export const createUser = async (req, res) => {
 
 export const loginAuthentication = async (req, res) => {
   const { email, password } = req.body;
+  const user = await User.findOne({ email });
   try {
-    const user = await User.findOne({ email });
     if (user) {
       if (password == user.password) {
         res.send({ 
           status: 101,
           message: "User Authenticated", 
           authenticatedUser: user });
-      } else {
+      }
+      else {
         res.send({ 
           status: 200,
           message: "Wrong Password!" });
       }
-    } else {
+    }
+    if (!user) {
       console.log("User not found !");
       res.send({ 
         status: 404,
@@ -56,6 +59,7 @@ export const loginAuthentication = async (req, res) => {
     console.log(err);
     res.send({ 
       status: 400,
-      message: "Error ! ", error: JSON.stringify(err) });
+      message: "Error ! ",
+      error: JSON.stringify(err) });
   }
 };
