@@ -9,8 +9,11 @@ dotenv.config();
 connectToMongo();
 
 app.use(express.json());
-app.use("/user",userRouter);
+app.use("/user", userRouter);
 // app.listen(4001, console.log("Server is listening at port: 4001"));
-app.listen(process.env.PORT, console.log(`Server is listening at port: ${process.env.PORT}`));
+app.listen(
+  process.env.PORT,
+  console.log(`Server is listening at port: ${process.env.PORT}`)
+);
 
-console.log ("Hello from backend ecommerce !");
+console.log("Hello from backend ecommerce !");
